@@ -59,8 +59,8 @@ pipeline {
       steps {
         sh '''
           set -e
-          export FIREBASE_PROJECT_ID="$FIREBASE_PROJECT_ID"
-          /var/jenkins_home/tantt/scripts/firebase-deploy.sh app
+           export FIREBASE_PROJECT_ID="$FIREBASE_PROJECT_ID"
+           NODE_OPTIONS=--max-old-space-size=4096 /var/jenkins_home/tantt/scripts/firebase-deploy.sh app
         '''
       }
     }
