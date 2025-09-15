@@ -49,31 +49,9 @@ pipeline {
       steps {
         dir('source') {
           sh '''
-            if [ -f package.json ] && npm run -s | grep -q ' test:ci'; then
               npm run test:ci
-            else
-              echo "No test:ci script, skip tests"
-            fi
           '''
         }
-      }
-    }
-
-    stage('Prepare Artifact') {
-      steps {
-        sh '''
-          set -e
-          mkdir -p app
-          if [ -f source/index.html ]; then
-            cp source/index.html app/index.html
-          elif [ -f index.html ]; then
-            cp index.html app/index.html
-          else
-            echo "index.html not found in source/ or workspace root" >&2
-            exit 1
-          fi
-          ./test/test.sh
-        '''
       }
     }
 
