@@ -56,16 +56,12 @@ pipeline {
     }
 
     stage('Deploy') {
-          steps {
-            sh '''
-              set -e
-              export FIREBASE_PROJECT_ID="$FIREBASE_PROJECT_ID"
-              /var/jenkins_home/tantt/scripts/firebase-deploy.sh app
-
-              export DEPLOY_ENV="$DEPLOY_ENV"
-              export KEEP_RELEASES="$KEEP_RELEASES"
-              INVENTORY_FILE="/var/jenkins_home/tantt/hosts" /var/jenkins_home/tantt/deploy.sh
-            '''
+      steps {
+        sh '''
+          set -e
+          export FIREBASE_PROJECT_ID="$FIREBASE_PROJECT_ID"
+          /var/jenkins_home/tantt/scripts/firebase-deploy.sh app
+        '''
       }
     }
   }
