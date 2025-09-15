@@ -55,13 +55,18 @@ pipeline {
       }
     }
 
-    stage('Deploy') {
+    stage('Trigger classic job') {
       steps {
-        sh '''
-          set -e
-           export FIREBASE_PROJECT_ID="$FIREBASE_PROJECT_ID"
-           NODE_OPTIONS=--max-old-space-size=4096 /var/jenkins_home/tantt/scripts/firebase-deploy.sh app
-        '''
+        script {
+          // Trigger classic job after pipeline stages succeed
+          build job: 'deploy-application',
+                wait: true,
+                parameters: [
+                  string(name: 'DEPLOY_ENV', value: params.DEPLOY_ENV),
+                  string(name: 'KEEP_RELEASES', value: params.KEEP_RELEASES),
+                  string(name: 'FIREBASE_PROJECT_ID', value: params.FIREBASE_PROJECT_ID)
+                ]
+        }
       }
     }
   }
