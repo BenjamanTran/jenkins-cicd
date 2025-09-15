@@ -1,5 +1,15 @@
 {
   "dependencies": {
     "firebase": "^11.3.1"
+  },
+  "scripts": {
+    "test:ci": "npm run lint",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.35.0",
+    "eslint": "^9.35.0",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.4.0"
   }
 }
