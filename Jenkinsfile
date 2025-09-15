@@ -50,7 +50,7 @@ pipeline {
         dir('source') {
           sh '''
             if [ -f package.json ] && npm run -s | grep -q ' test:ci'; then
-              CI=true npm run test:ci
+              npm run test:ci
             else
               echo "No test:ci script, skip tests"
             fi
