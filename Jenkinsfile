@@ -6,7 +6,7 @@ pipeline {
     string(name: 'BRANCH', defaultValue: 'main', description: 'Git branch to build')
     choice(name: 'DEPLOY_ENV', choices: ['local', 'remote', 'both'], description: 'Where to deploy')
     string(name: 'KEEP_RELEASES', defaultValue: '5', description: 'How many releases to keep')
-    string(name: 'FIREBASE_PROJECT_ID', defaultValue: '', description: 'Firebase project ID (optional)')
+    string(name: 'FIREBASE_PROJECT_ID', defaultValue: 'tantt-jenkins-2592e', description: 'Firebase project ID (optional)')
   }
 
   environment {
