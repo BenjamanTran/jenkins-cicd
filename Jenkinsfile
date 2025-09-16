@@ -49,11 +49,7 @@ pipeline {
       steps {
         dir('source') {
           sh '''
-            if [ -f package.json ] && npm run -s | grep -q ' test:ci'; then
               npm run test:ci
-            else
-              echo "No test:ci script, skip tests"
-            fi
           '''
         }
       }
