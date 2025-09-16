@@ -4,7 +4,7 @@ pipeline {
   parameters {
     string(name: 'REPO_URL', defaultValue: 'https://github.com/BenjamanTran/jenkins-cicd.git', description: 'Application repository URL')
     string(name: 'BRANCH', defaultValue: 'main', description: 'Git branch to build')
-    choice(name: 'DEPLOY_ENV', choices: ['local', 'remote', 'both'], description: 'Where to deploy')
+    choice(name: 'DEPLOY_ENV', choices: ['remote', 'local', 'both'], description: 'Where to deploy')
     string(name: 'KEEP_RELEASES', defaultValue: '5', description: 'How many releases to keep')
     string(name: 'FIREBASE_PROJECT_ID', defaultValue: 'tantt-jenkins-2592e', description: 'Firebase project ID (optional)')
   }
