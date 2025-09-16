@@ -100,14 +100,14 @@ pipeline {
         def timeUtc = new Date().format("yyyy-MM-dd HH:mm:ss 'UTC'", TimeZone.getTimeZone('UTC'))
         def firebaseUrl = 'https://tantt-jenkins-2592e.web.app'
         def remoteUrl = 'http://10.1.1.195/jenkins/tanttws2/deploy/current/'
-        def msg = """Deployment Successful!
+        def msg = """Deployment Successful! Em quá mợt mỏi với workshop2
 Author: ${author}
 Commit: ${commitMsg}
 Time: ${timeUtc}
 
 Links:
-• Firebase: @${firebaseUrl}
-• Remote: @${remoteUrl}"""
+• Firebase: ${firebaseUrl}
+• Remote: ${remoteUrl}"""
         slackSend color: 'good', message: msg
       }
     }
@@ -125,8 +125,8 @@ Commit: ${commitMsg}
 Time: ${timeUtc}
 
 Links:
-• Firebase: @${firebaseUrl}
-• Remote: @${remoteUrl}"""
+• Firebase: ${firebaseUrl}
+• Remote: ${remoteUrl}"""
         slackSend color: 'danger', message: msg
       }
     }
