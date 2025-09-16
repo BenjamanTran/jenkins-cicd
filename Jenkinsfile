@@ -55,19 +55,38 @@ pipeline {
       }
     }
 
-    stage('Trigger classic job') {
+    stage('Prepare Artifact') {
       steps {
-        script {
-          // Trigger classic job after pipeline stages succeed
-          build job: 'deploy-application',
-                wait: true,
-                parameters: [
-                  string(name: 'REPO_URL', value: params.REPO_URL),
-                  string(name: 'BRANCH', value: params.BRANCH),
-                  string(name: 'DEPLOY_ENV', value: params.DEPLOY_ENV),
-                  string(name: 'KEEP_RELEASES', value: params.KEEP_RELEASES),
-                  string(name: 'FIREBASE_PROJECT_ID', value: params.FIREBASE_PROJECT_ID)
-                ]
+        sh '''
+          set -e
+          SRC=source
+          if [ ! -f source/index.html ] && [ -f source/web-performance-project1-initial/index.html ]; then
+            SRC=source/web-performance-project1-initial
+          fi
+          echo "SRC=$SRC"
+          test -f "$SRC/index.html" || { echo "index.html missing in $SRC"; exit 1; }
+        '''
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        timeout(time: 10, unit: 'MINUTES') {
+          sh '''
+            set -e
+            SRC=source
+            if [ ! -f source/index.html ] && [ -f source/web-performance-project1-initial/index.html ]; then
+              SRC=source/web-performance-project1-initial
+            fi
+            echo "Deploy from $SRC"
+
+            export FIREBASE_PROJECT_ID="$FIREBASE_PROJECT_ID"
+            NODE_OPTIONS=--max-old-space-size=4096 /var/jenkins_home/tantt/scripts/firebase-deploy.sh "$SRC"
+
+            export DEPLOY_ENV="$DEPLOY_ENV"
+            export KEEP_RELEASES="$KEEP_RELEASES"
+            SOURCE_DIR="$SRC" /var/jenkins_home/tantt/deploy.sh
+          '''
         }
       }
     }
