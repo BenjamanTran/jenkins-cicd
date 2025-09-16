@@ -49,7 +49,11 @@ pipeline {
       steps {
         dir('source') {
           sh '''
+            if [ -f package.json ] && npm run -s | grep -q ' test:ci'; then
               npm run test:ci
+            else
+              echo "No test:ci script, skip tests"
+            fi
           '''
         }
       }
@@ -62,6 +66,8 @@ pipeline {
           build job: 'deploy-application',
                 wait: true,
                 parameters: [
+                  string(name: 'REPO_URL', value: params.REPO_URL),
+                  string(name: 'BRANCH', value: params.BRANCH),
                   string(name: 'DEPLOY_ENV', value: params.DEPLOY_ENV),
                   string(name: 'KEEP_RELEASES', value: params.KEEP_RELEASES),
                   string(name: 'FIREBASE_PROJECT_ID', value: params.FIREBASE_PROJECT_ID)
