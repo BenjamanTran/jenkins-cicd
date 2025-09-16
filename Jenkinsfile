@@ -59,9 +59,9 @@ pipeline {
       steps {
         sh '''
           set -e
-          SRC=source
-          if [ ! -f source/index.html ] && [ -f source/web-performance-project1-initial/index.html ]; then
-            SRC=source/web-performance-project1-initial
+          SRC="$(pwd)/source"
+          if [ ! -f "$SRC/index.html" ] && [ -f "$SRC/web-performance-project1-initial/index.html" ]; then
+            SRC="$SRC/web-performance-project1-initial"
           fi
           echo "SRC=$SRC"
           test -f "$SRC/index.html" || { echo "index.html missing in $SRC"; exit 1; }
@@ -74,9 +74,9 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES') {
           sh '''
             set -e
-            SRC=source
-            if [ ! -f source/index.html ] && [ -f source/web-performance-project1-initial/index.html ]; then
-              SRC=source/web-performance-project1-initial
+            SRC="$(pwd)/source"
+            if [ ! -f "$SRC/index.html" ] && [ -f "$SRC/web-performance-project1-initial/index.html" ]; then
+              SRC="$SRC/web-performance-project1-initial"
             fi
             echo "Deploy from $SRC"
 
