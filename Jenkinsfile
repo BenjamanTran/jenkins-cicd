@@ -91,4 +91,44 @@ pipeline {
       }
     }
   }
+  post {
+    success {
+      script {
+        def repoDir = 'source'
+        def commitMsg = sh(returnStdout: true, script: "git -C ${repoDir} show -s --format=%s HEAD").trim()
+        def author = sh(returnStdout: true, script: "git -C ${repoDir} show -s --format=%an HEAD").trim()
+        def timeUtc = new Date().format("yyyy-MM-dd HH:mm:ss 'UTC'", TimeZone.getTimeZone('UTC'))
+        def firebaseUrl = 'https://tantt-jenkins-2592e.web.app'
+        def remoteUrl = 'http://10.1.1.195/jenkins/tanttws2/deploy/current/'
+        def msg = """Deployment Successful! Em quá mợt mỏi với workshop2
+Author: ${author}
+Commit: ${commitMsg}
+Time: ${timeUtc}
+
+Links:
+• Firebase: ${firebaseUrl}
+• Remote: ${remoteUrl}"""
+        slackSend color: 'good', message: msg
+      }
+    }
+    failure {
+      script {
+        def repoDir = 'source'
+        def commitMsg = sh(returnStdout: true, script: "git -C ${repoDir} show -s --format=%s HEAD || true").trim()
+        def author = sh(returnStdout: true, script: "git -C ${repoDir} show -s --format=%an HEAD || true").trim()
+        def timeUtc = new Date().format("yyyy-MM-dd HH:mm:ss 'UTC'", TimeZone.getTimeZone('UTC'))
+        def firebaseUrl = 'https://tantt-jenkins-2592e.web.app'
+        def remoteUrl = 'http://10.1.1.195/jenkins/tanttws2/deploy/current/'
+        def msg = """Deployment Failed!
+Author: ${author}
+Commit: ${commitMsg}
+Time: ${timeUtc}
+
+Links:
+• Firebase: ${firebaseUrl}
+• Remote: ${remoteUrl}"""
+        slackSend color: 'danger', message: msg
+      }
+    }
+  }
 }
